@@ -3,31 +3,10 @@ import pandas as pd
 import numpy as np
 import plotly.graph_objs as go
 import random
-import os
-from playsound import playsound
-import time  # Import the time module for delay
+import time
 
 # Page Config
 st.set_page_config(page_title="Neon Drone Dashboard", layout="wide")
-
-# Function to play the audio file
-def play_audio(file_path):
-    try:
-        # Check if the file exists at the specified path
-        if os.path.exists(file_path):
-            playsound(file_path)  # This will play the audio file
-            print("Audio played successfully!")
-        else:
-            print(f"Error: File '{file_path}' not found.")
-    except Exception as e:
-        print(f"An error occurred: {e}")
-
-# Introducing a delay of 6 seconds before playing the audio
-time.sleep(6)  # Delay the audio for 6 seconds
-
-# Play audio on initial load (will play 'connected.mp3' from the 'audio' folder)
-audio_file = "audio/connected.mp3"  # Path to the audio file in the 'audio' folder
-play_audio(audio_file)
 
 # Neon CSS
 st.markdown("""
@@ -51,6 +30,11 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
+
+# Delay and Audio Playback
+time.sleep(6)  # Wait 6 seconds before playing
+with open("audio/connection.mp3", "rb") as audio_file:
+    st.audio(audio_file.read(), format="audio/mp3")
 
 # Telemetry Generator
 def generate_telemetry():
@@ -102,10 +86,10 @@ with col2:
 
     # Arms (X Shape)
     arms = [
-        ([0, 1], [0, 1], [0, 0]),   # Arm 1
-        ([0, -1], [0, 1], [0, 0]),  # Arm 2
-        ([0, -1], [0, -1], [0, 0]), # Arm 3
-        ([0, 1], [0, -1], [0, 0])   # Arm 4
+        ([0, 1], [0, 1], [0, 0]),
+        ([0, -1], [0, 1], [0, 0]),
+        ([0, -1], [0, -1], [0, 0]),
+        ([0, 1], [0, -1], [0, 0])
     ]
     for x, y, z in arms:
         fig.add_trace(go.Scatter3d(
